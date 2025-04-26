@@ -47,31 +47,43 @@ todo-mern-task/
 
 ### 1. Clone the Repository
 
+```
 git clone https://github.com/your-username/todo-mern-app.git
 cd todo-mern-app
+```
 
 ### 2. Setup Server (Backend)
 
+```
 cd server
 npm install
+```
 
 ### 2.1 Create a .env file inside the server folder:
 
+```
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 PORT=5000
+```
 
 ### 2.2 Run the backend server:
 
+```
 npm run dev
+```
 
 ### 3. Setup Client (Frontend)
 
+```
 cd client
 npm install
 npm start
+```
 
 ### 4. Deployment
 
+```
 cd client
 npm run build
+```
