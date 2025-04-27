@@ -3,7 +3,7 @@ import { getCookie } from "cookies-next/client";
 
 const token = getCookie("token");
 
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 axios.defaults.headers.common["Content-Type"] = "application/json";
 axios.defaults.headers.common["Accept"] = "application/json";
 
