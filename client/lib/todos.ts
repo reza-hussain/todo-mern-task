@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getCookie } from "cookies-next/client";
-import { title } from "process";
 
 const token = getCookie("token");
 
