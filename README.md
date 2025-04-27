@@ -1,89 +1,55 @@
-# 📝 MERN To-Do List Application
+# Todo MERN Task App
 
-A simple and responsive To-Do List management application built with the **MERN** stack (MongoDB, Express.js, React.js, Node.js).  
-Users can register, log in, and manage their personal to-do lists and tasks easily.
+This is a simple Todo application built with the MERN stack (MongoDB, Express.js, React.js, and Node.js).
 
-## ✨ Features
+## Project Structure
 
-- User Registration and Login with secure JWT Authentication
-- Create, Read, Update, Delete (CRUD) for To-Do Lists
-- CRUD operations for individual To-Do Items inside lists
-- Responsive and user-friendly UI
-- RESTful API design
-- Error handling and input validations
-- Deployment-ready
-
-## 🚀 Tech Stack
-
-**Frontend:**
-
-- React.js
-- Axios
-- React Router DOM
-
-**Backend:**
-
-- Node.js
-- Express.js
-- MongoDB (Mongoose ODM)
-- bcryptjs
-- jsonwebtoken
-
-**Others:**
-
-- CORS
-- dotenv
-- Git & GitHub
-
-## 📁 Project Structure
-
+```
 todo-mern-task/
-├── client/(Frontend - React)
-├── server/(Backend - Node.js, Express)
-├── README.md
-└── .gitignore
-
-## ⚙️ Getting Started Locally
-
-### 1. Clone the Repository
-
-```
-git clone https://github.com/your-username/todo-mern-app.git
-cd todo-mern-app
+    server/
+    client/
 ```
 
-### 2. Setup Server (Backend)
+## Features
 
-```
-cd server
-npm install
-```
+- Add new tasks
+- Mark tasks as complete
+- Delete tasks
+- Persistent storage with MongoDB
 
-### 2.1 Create a .env file inside the server folder:
+## Installation
 
-```
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-PORT=5000
-```
+1. Clone the repository or download it.
+2. Install server dependencies:
+   ```bash
+   cd server
+   npm install
+   ```
+3. Install client dependencies:
+   ```bash
+   cd client
+   npm install
+   ```
+4. Create a `.env` file in the server directory and set up your MongoDB connection string.
 
-### 2.2 Run the backend server:
+5. Run the server:
+   ```bash
+   npm run dev
+   ```
+6. Run the client:
+   ```bash
+   cd client
+   npm start
+   ```
 
-```
-npm run dev
-```
+## Technologies Used
 
-### 3. Setup Client (Frontend)
+- MongoDB
+- Express.js
+- React.js
+- Node.js
 
-```
-cd client
-npm install
-npm start
-```
+## Deployed on Vercel and Render
 
-### 4. Deployment
-
-```
-cd client
-npm run build
-```
+[`Front-end`](https://todo-mern-task.vercel.app/)
+[`Back-end`](https://todo-mern-task.onrender.com)
