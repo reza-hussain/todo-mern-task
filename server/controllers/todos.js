@@ -1,14 +1,15 @@
-const TodoItem = require("../models/TodoItem.js");
+const TodoList = require("../models/TodoList.js");
+const { v4 } = require("uuid");
 
 const getTodos = async (req, res) => {
+  const { listId: id } = req.params;
   try {
-    const todos = await TodoItem.find({ user: req.user._id });
+    const todos = await TodoList.findOne({ _id: id });
     if (!todos) {
       return res.status(404).json({ message: "No todos found" });
     }
 
     res.status(200).json({
-      user: req.user._id,
       todos,
     });
   } catch (error) {
@@ -18,28 +19,28 @@ const getTodos = async (req, res) => {
 
 const createTodo = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title, listId: id } = req.body;
 
     if (!title) {
       return res.status(400).json({ message: "Title is required" });
     }
-    const todo = new TodoItem({
-      title,
-      user: req.user._id,
-      completed: false,
-    });
 
-    await todo.save();
-    const todos = await TodoItem.find({
-      message: "Todo created successfully",
-      user: req.user._id,
-    });
+    const list = await TodoList.findOne({ _id: id });
 
-    if (!todoList) {
-      return res.status(404).json({ message: "No todos found" });
+    if (!list) {
+      return res.status(404).json({ message: "Todo List not found" });
     }
 
-    res.status(200).json({ user: req.user._id, todos });
+    const newTodo = {
+      title,
+      completed: false,
+      id: v4(),
+    };
+
+    list.items.push(newTodo);
+    await list.save();
+
+    res.status(200).json({ message: "Todo created successfully" });
   } catch (error) {
     res.status(500).json({ error: "Failed to add todo" });
   }
@@ -47,22 +48,25 @@ const createTodo = async (req, res) => {
 
 const markTodoAsCompleted = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { listId, todoId } = req.body;
 
-    const todos = await TodoItem.findByIdAndUpdate(
-      id,
-      { completed: true },
-      { new: true }
-    );
+    const list = await TodoList.findOne({ _id: listId });
 
-    if (!todos) {
-      return res.status(404).json({ message: "Todo not found" });
+    if (!list) {
+      return res.status(404).json({ message: "Todo list not found" });
     }
+
+    const item = list.items.id(todoId);
+
+    if (!item) {
+      return res.status(404).json({ message: "ToDo Item not found" });
+    }
+
+    item.completed = true;
+    await list.save();
 
     res.status(200).json({
       message: "Todo updated successfully",
-      user: req.user._id,
-      todos,
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to mark todo as completed" });
@@ -71,42 +75,48 @@ const markTodoAsCompleted = async (req, res) => {
 
 const markTodoAsPending = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { listId, todoId } = req.body;
 
-    const todos = await TodoItem.findByIdAndUpdate(
-      id,
-      { completed: false },
-      { new: true }
-    );
+    const list = await TodoList.findOne({ _id: listId });
 
-    if (!todos) {
-      return res.status(404).json({ message: "Todo not found" });
+    if (!list) {
+      return res.status(404).json({ message: "Todo list not found" });
     }
+    const item = list.items.id(todoId);
+    if (!item) {
+      return res.status(404).json({ message: "Todo Item not found" });
+    }
+    item.completed = false;
+    await list.save();
 
     res.status(200).json({
       message: "Todo updated successfully",
-      user: req.user._id,
-      todos,
     });
   } catch (error) {
-    res.status(500).json({ error: "Failed to mark todo as completed" });
+    res.status(500).json({ error: "Failed to mark todo as pending" });
   }
 };
 
 const deleteTodo = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { listId, todoId } = req.body;
 
-    const todos = await TodoItem.findByIdAndDelete(id);
+    const list = await TodoList.findOne({ _id: listId });
 
-    if (!todos) {
+    if (!list) {
       return res.status(404).json({ message: "Todo not found" });
     }
+
+    const item = list.items.id(todoId);
+    if (!item) {
+      return res.status(404).json({ message: "Todo Item not found" });
+    }
+    item.deleteOne();
+    await list.save();
 
     res.status(200).json({
       message: "Todo deleted successfully",
       user: req.user._id,
-      todos,
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete todo" });

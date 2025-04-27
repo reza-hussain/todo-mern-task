@@ -11,10 +11,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    todos: [
+    todoLists: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "TodoItem",
+        ref: "TodoList",
         default: [],
       },
     ],

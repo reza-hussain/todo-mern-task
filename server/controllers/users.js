@@ -22,12 +22,16 @@ const registerUser = async (req, res) => {
           const hashedPassword = await generateHash(password);
           req.body.password = hashedPassword;
 
-          const newUser = new User({ email, password: hashedPassword });
+          const newUser = new User({
+            email,
+            password: hashedPassword,
+            todoLists: [],
+          });
           return newUser.save();
         }
       })
       .then(() => {
-        res.status(201).json({ message: "User registered successfully" });
+        res.status(200).json({ message: "User registered successfully" });
       })
       .catch((err) => {
         console.error(err);
@@ -54,7 +58,7 @@ const loginUser = async (req, res) => {
         }
 
         const token = jwt.sign({ user }, process.env.JWT_SECRET, {
-          expiresIn: "1h",
+          expiresIn: "500000",
         });
 
         req.user = user;
