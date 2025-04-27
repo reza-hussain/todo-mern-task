@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getCookie } from "cookies-next/client";
+import { title } from "process";
 
 const token = getCookie("token");
 
@@ -14,6 +15,8 @@ export const getTodos = async () => {
     },
   });
 
+  console.log({ response });
+
   if (response.status !== 200) {
     throw new Error("Failed to fetch todos");
   }
@@ -21,12 +24,25 @@ export const getTodos = async () => {
   return response.data;
 };
 
-export const createTodo = async (todo: { title: string }) => {
-  const response = await axios.post("/todos/createTodo", todo, {
-    headers: {
-      Authorization: `Bearer ${token}`,
+export const createTodo = async ({
+  title,
+  listId,
+}: {
+  title: string;
+  listId: string;
+}) => {
+  const response = await axios.post(
+    "/todos/createTodo",
+    {
+      title,
+      listId,
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   if (response.status !== 200) {
     throw new Error("Failed to create todo");
@@ -37,12 +53,22 @@ export const createTodo = async (todo: { title: string }) => {
   return response.data;
 };
 
-export const deleteTodo = async (id: string) => {
-  const response = await axios.delete(`/todos/deleteTodo/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const deleteTodo = async ({
+  listId,
+  todoId,
+}: {
+  listId: string;
+  todoId: string;
+}) => {
+  const response = await axios.post(
+    `/todos/deleteTodo`,
+    { listId, todoId },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   if (response.status !== 200) {
     throw new Error("Failed to delete todo");
@@ -51,10 +77,16 @@ export const deleteTodo = async (id: string) => {
   return response.data;
 };
 
-export const markAsPending = async (id: string) => {
+export const markAsPending = async ({
+  listId,
+  todoId,
+}: {
+  listId: string;
+  todoId: string;
+}) => {
   const response = await axios.put(
-    `/todos/markAsPending/${id}`,
-    {},
+    `/todos/markAsPending`,
+    { listId, todoId },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -69,10 +101,16 @@ export const markAsPending = async (id: string) => {
   return response.data;
 };
 
-export const markAsCompleted = async (id: string) => {
+export const markAsCompleted = async ({
+  listId,
+  todoId,
+}: {
+  listId: string;
+  todoId: string;
+}) => {
   const response = await axios.put(
-    `/todos/markAsCompleted/${id}`,
-    {},
+    `/todos/markAsCompleted`,
+    { listId, todoId },
     {
       headers: {
         Authorization: `Bearer ${token}`,
