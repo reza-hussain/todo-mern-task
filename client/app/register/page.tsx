@@ -22,9 +22,7 @@ const Register = () => {
       return;
     }
 
-    const response = await registerUser(email, password);
-
-    console.log({ response });
+    await registerUser(email, password);
   };
 
   return (

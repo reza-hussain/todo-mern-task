@@ -15,8 +15,6 @@ export const getTodos = async () => {
     },
   });
 
-  console.log({ response });
-
   if (response.status !== 200) {
     throw new Error("Failed to fetch todos");
   }
@@ -47,8 +45,6 @@ export const createTodo = async ({
   if (response.status !== 200) {
     throw new Error("Failed to create todo");
   }
-
-  console.log({ response });
 
   return response.data;
 };

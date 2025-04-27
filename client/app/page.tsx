@@ -38,8 +38,6 @@ export default function Home() {
     try {
       const response = await getTodoList();
 
-      console.log({ response });
-
       setTodoList(response.todoList as ITodoList[]);
 
       if (selectedItem) {
@@ -48,8 +46,6 @@ export default function Home() {
         );
       }
     } catch (error) {
-      console.log({ error });
-
       console.error("Error fetching todos:", error);
     }
   };
